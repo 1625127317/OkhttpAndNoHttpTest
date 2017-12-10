@@ -1,5 +1,7 @@
 package com.example.zsk.okhttpandnohttptest;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.okhttpandnohttptest.greendao_gen.DaoSession;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     EditText findEdit;
     @BindView(R.id.button3)
     Button findButton;
+    @BindView(R.id.textView)
+    TextView textView;
 
     private Call call;
     private File file;
@@ -131,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     int i = 0;
+
     @OnClick(R.id.button4)
     public void testFindButton() {
         String findStr = findEdit.getText().toString();
@@ -139,10 +145,27 @@ public class MainActivity extends AppCompatActivity {
                 .where(DateEntityDao.Properties.Id.eq(findLong))
                 .list();
         for (DateEntity list : lists) {
-            Log.e("数据集合：","第"+(i++)+"个是："+list.getUsername());
+            Log.e("数据集合：", "第" + (i++) + "个是：" + list.getUsername());
         }
     }
 
+    @OnClick(R.id.button5)
+    public void testAppActivity() {
+        //启动另一个App中的activiyt
+        Intent intent = new Intent();
+        String packageName = "com.example.zsk.myapplication";
+        String className = "com.example.zsk.myapplication.MainActivity";
+        intent.setClassName(packageName, className);
+        intent.putExtra("test", "hahah");
+        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivityForResult(intent, 1);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            textView.setText(data.getStringExtra("test"));
+        }
+    }
 }
 
