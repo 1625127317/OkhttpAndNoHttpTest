@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    //测试一下
     //测试GreenDao
     @OnClick(R.id.button3)
     public void testGreenDao() {
